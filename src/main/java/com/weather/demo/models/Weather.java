@@ -23,6 +23,7 @@ public class Weather {
     private int currentTemp;
     private int humidity;
     private int pressure;
+    private String description;
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime DateTime = LocalDateTime.now();
 
@@ -32,12 +33,21 @@ public class Weather {
 
     }
 
-    public Weather(String cityName, int currentTemp, int humidity, int pressure, LocalDateTime dateTime) {
+    public Weather(String cityName, int currentTemp, int humidity, int pressure, String description, LocalDateTime dateTime) {
         this.cityName = cityName;
         this.currentTemp = currentTemp;
         this.humidity = humidity;
         this.pressure = pressure;
+        this.description = description;
         DateTime = dateTime;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public LocalDateTime getDateTime() {

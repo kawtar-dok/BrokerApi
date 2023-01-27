@@ -5,14 +5,15 @@ import com.weather.demo.dao.WeatherRepository;
 import com.weather.demo.models.Weather;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.junit.rules.ExternalResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.awt.*;
+import java.awt.image.ImageProducer;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.logging.Logger;
+
 
 @Component
 public class CronFetch {
@@ -23,6 +24,11 @@ public class CronFetch {
     private int currentTemp;
     private int humidity;
     private int pressure;
+    private String weatherDescription;
+    private Image iconImg;
+    
+    String weatherDescriptionNew = null;
+    String iconCode = null;
 
     String defaultUnit;
     String Temp;
@@ -30,12 +36,12 @@ public class CronFetch {
     @Autowired
     private WeatherRepository weatherRepository;
 
-    @Scheduled(cron = "0 0 * * * ? ")
+    @Scheduled(cron = "0 42 * * * ? ")
     public void getWeatherInfo(){
 
 //      WeatherService weatherService = new WeatherService();
 //      JSONObject weather = weatherService.getWeather();
-//      System.out.println(weather);
+//      System.out.println(weather);((
         WeatherService weatherService = new WeatherService();
         Weather weather = new Weather();
 
@@ -43,8 +49,7 @@ public class CronFetch {
         JSONObject mainObject = weatherService.returnMain();
 /*
         //gettingIcon from API
-        String iconCode = null;
-        String weatherDescriptionNew = null;
+
         JSONArray jsonArray = weatherService.returnWeatherArray();
         for (int i=0; i<jsonArray.length(); i++) {
             JSONObject weatherObj = jsonArray.getJSONObject(i);
@@ -54,17 +59,29 @@ public class CronFetch {
 
         iconImg.setSource(new ExternalResource("http://openweathermap.org/img/wn/"+iconCode+"@2x.png"));
 */
+        //gettingIcon from API
+
+        JSONArray jsonArray = weatherService.returnWeatherArray();
+        for (int i=0; i<jsonArray.length(); i++) {
+            JSONObject weatherObj = jsonArray.getJSONObject(i);
+            iconCode = weatherObj.getString("icon");
+            weatherDescriptionNew = weatherObj.getString("description");
+        }
+
         location = weather.getCityName();
         defaultUnit = "\u00b0"+"C";
         currentTemp = mainObject.getInt("temp");
         pressure = mainObject.getInt("pressure");
         humidity = mainObject.getInt("humidity");
         dt = weather.getDateTime();
-        //        DateTimeFormatter format;
-//        format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-   //     LocalDateTime DateTime = LocalDateTime.now(); ;
-//        String dt = DateTime.format(format);
         Temp = currentTemp +defaultUnit;
+        weatherDescription = weatherDescriptionNew;
+
+        //DateTimeFormatter format;
+        //format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        //LocalDateTime DateTime = LocalDateTime.now(); ;
+        //String dt = DateTime.format(format);
+
 
 
 
@@ -74,11 +91,12 @@ public class CronFetch {
         weather.setPressure(pressure);
         weather.setHumidity(humidity);
         weather.setDateTime(dt);
+        weather.setDescription(weatherDescription);
 
         weatherRepository.save(weather);
 
         System.out.println("currently in " +location + " temp: "+ Temp
-                +" pressure: "+pressure+" humidity: "+humidity+" dt: "+ dt +" + one" );
+                +" pressure: "+pressure+" humidity: "+humidity+" dt: "+ dt + " Description: " + weatherDescription);
 
 
     }
