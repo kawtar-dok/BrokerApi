@@ -2,11 +2,11 @@ package com.weather.demo.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+
 
 
 @Data
@@ -26,20 +26,30 @@ public class Weather {
     private String description;
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     private LocalDateTime DateTime = LocalDateTime.now();
-
+    @Column(nullable = true, length = 64)
+    private String iconImage;
 
     public Weather() {
         this.cityName = "rabat";
 
     }
 
-    public Weather(String cityName, int currentTemp, int humidity, int pressure, String description, LocalDateTime dateTime) {
+    public Weather(String cityName, int currentTemp, int humidity, int pressure, String description, LocalDateTime dateTime, String iconImage) {
         this.cityName = cityName;
         this.currentTemp = currentTemp;
         this.humidity = humidity;
         this.pressure = pressure;
         this.description = description;
         DateTime = dateTime;
+        this.iconImage = iconImage;
+    }
+
+    public String getIconImage() {
+        return iconImage;
+    }
+
+    public void setIconImage(String iconImage) {
+        this.iconImage = iconImage;
     }
 
     public String getDescription() {

@@ -25,7 +25,7 @@ public class CronFetch {
     private int humidity;
     private int pressure;
     private String weatherDescription;
-    private Image iconImg;
+    private String iconImg;
     
     String weatherDescriptionNew = null;
     String iconCode = null;
@@ -36,7 +36,7 @@ public class CronFetch {
     @Autowired
     private WeatherRepository weatherRepository;
 
-    @Scheduled(cron = "0 42 * * * ? ")
+    @Scheduled(cron = "0 48 * * * ? ")
     public void getWeatherInfo(){
 
 //      WeatherService weatherService = new WeatherService();
@@ -76,7 +76,7 @@ public class CronFetch {
         dt = weather.getDateTime();
         Temp = currentTemp +defaultUnit;
         weatherDescription = weatherDescriptionNew;
-
+        iconImg = "http://openweathermap.org/img/wn/"+iconCode+"@2x.png";
         //DateTimeFormatter format;
         //format = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         //LocalDateTime DateTime = LocalDateTime.now(); ;
@@ -92,11 +92,12 @@ public class CronFetch {
         weather.setHumidity(humidity);
         weather.setDateTime(dt);
         weather.setDescription(weatherDescription);
+        weather.setIconImage(iconImg);
 
         weatherRepository.save(weather);
 
         System.out.println("currently in " +location + " temp: "+ Temp
-                +" pressure: "+pressure+" humidity: "+humidity+" dt: "+ dt + " Description: " + weatherDescription);
+                +" pressure: "+pressure+" humidity: "+humidity+" dt: "+ dt + " Description: " + weatherDescription +"icon :" + iconImg);
 
 
     }
