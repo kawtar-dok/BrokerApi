@@ -25,7 +25,8 @@ public class Weather {
     private int pressure;
     private String description;
     @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
-    private LocalDateTime DateTime = LocalDateTime.now();
+    @Column(name= "date_time")
+    private LocalDateTime dateTime = LocalDateTime.now();
     @Column(nullable = true, length = 64)
     private String iconImage;
 
@@ -40,7 +41,7 @@ public class Weather {
         this.humidity = humidity;
         this.pressure = pressure;
         this.description = description;
-        DateTime = dateTime;
+        this.dateTime = dateTime;
         this.iconImage = iconImage;
     }
 
@@ -61,11 +62,11 @@ public class Weather {
     }
 
     public LocalDateTime getDateTime() {
-        return DateTime;
+        return dateTime;
     }
 
     public void setDateTime(LocalDateTime dateTime) {
-        DateTime = dateTime;
+        this.dateTime = dateTime;
     }
 
     public Long getId() {

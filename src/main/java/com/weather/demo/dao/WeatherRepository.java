@@ -21,8 +21,9 @@ import java.util.List;
  */
 
 
-public interface WeatherRepository extends CrudRepository<Weather, Long> {
-    List<Weather> findByCityName(String cityName);
+public interface WeatherRepository extends JpaRepository<Weather, Long> {
+    Weather findTopByOrderByDateTimeDesc();
+    //  List<Weather> findByCityName(String cityName);
   //  List<Weather> findByDate(Date minDate, Date maxDate);
 
 }

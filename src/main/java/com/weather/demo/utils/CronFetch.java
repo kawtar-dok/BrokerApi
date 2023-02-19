@@ -36,7 +36,7 @@ public class CronFetch {
     @Autowired
     private WeatherRepository weatherRepository;
 
-    @Scheduled(cron = "0 48 * * * ? ")
+    @Scheduled(cron = "0 0 * * * ? ")
     public void getWeatherInfo(){
 
 //      WeatherService weatherService = new WeatherService();
